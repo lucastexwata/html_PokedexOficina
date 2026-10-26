@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal sem medo | Guia da Pokédex</title>
+  <style>
+    :root {
+      --bg:#0d111b; --panel:#151c2b; --panel2:#202c40; --text:#e9eef8;
+      --muted:#bdc8da; --yellow:#ffd23f; --blue:#2379c9; --green:#42c98b;
+      --red:#ff8585; --border:#303c52;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 "Segoe UI",Arial,sans-serif}
+    header{padding:36px 20px 28px;text-align:center;background:radial-gradient(circle at top,#263550,var(--bg) 72%);border-bottom:1px solid var(--border)}
+    .tag{display:inline-block;padding:5px 12px;border:1px solid #53647e;border-radius:999px;color:var(--yellow);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+    h1{margin:12px 0 4px;font-size:clamp(2rem,5vw,3.2rem)} header p{margin:0 auto;max-width:760px;color:var(--muted)}
+    main{width:min(1000px,calc(100% - 32px));margin:28px auto 60px}
+    h2{margin:32px 0 12px;color:var(--yellow);font-size:1.45rem}
+    h3{margin:16px 0 6px;font-size:1.08rem}
+    .notice,.warning{padding:16px 18px;background:var(--panel2);border-left:4px solid var(--yellow);border-radius:10px;margin:16px 0}
+    .warning{border-left-color:var(--red)}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 8px 24px #0002}
+    .card p{margin:7px 0;color:var(--muted)}
+    .command{display:flex;align-items:center;gap:10px;background:#080c13;border:1px solid #30394a;border-radius:9px;padding:10px 10px 10px 14px;margin:12px 0}
+    code{color:#a8e6c6;font-family:Consolas,"Courier New",monospace;overflow-wrap:anywhere}
+    .command code{flex:1}
+    button{border:0;border-radius:7px;background:var(--blue);color:white;font-weight:700;padding:8px 11px;cursor:pointer;white-space:nowrap}
+    button:hover{filter:brightness(1.13)}
+    .tip{color:var(--green)!important}.small{font-size:.92rem;color:var(--muted)}
+    ol,ul{padding-left:22px} li{margin:8px 0}
+    .error{color:#ffb0b0;font-weight:700}
+    .label{display:inline-block;border-radius:6px;padding:2px 7px;background:#29364b;color:var(--yellow);font-size:.82rem}
+    footer{text-align:center;color:var(--muted);padding:20px;border-top:1px solid var(--border)}
+    @media(max-width:560px){.command{align-items:stretch;flex-direction:column}.command button{align-self:flex-start}}
+  </style>
+</head>
+<body>
+<header>
+  <span class="tag">Guia rápido • Python • Flet</span>
+  <h1>Terminal sem medo</h1>
+  <p>Comandos para preparar, executar e resolver problemas comuns na Pokédex da oficina.</p>
+</header>
+<main>
+  <div class="notice">
+    <strong>Antes de começar:</strong> abra a pasta do projeto no VS Code e escolha
+    <strong>Terminal → Novo Terminal</strong>. Os comandos foram preparados para Windows PowerShell.
+    Copie e execute <strong>um comando por vez</strong>.
+  </div>
+
+  <h2>1. Entrar na pasta do projeto</h2>
+  <section class="card">
+    <p><code>cd</code> significa mudar de diretório. Este comando leva o terminal à pasta da Pokédex.</p>
+    <div class="command"><code>cd "E:\SEM.4\PE2\API - Def\PokedexOficina"</code><button data-copy='cd "E:\SEM.4\PE2\API - Def\PokedexOficina"'>Copiar</button></div>
+    <p class="small">As aspas são importantes porque o caminho tem espaços.</p>
+    <p>Para conferir onde você está:</p>
+    <div class="command"><code>Get-Location</code><button data-copy="Get-Location">Copiar</button></div>
+    <p>Para listar os arquivos da pasta e conferir se existe <code>main.py</code>:</p>
+    <div class="command"><code>dir</code><button data-copy="dir">Copiar</button></div>
+  </section>
+
+  <h2>2. Ativar o ambiente virtual</h2>
+  <section class="card">
+    <p>O ambiente virtual mantém as bibliotecas deste projeto separadas das de outros projetos.</p>
+    <div class="command"><code>..\.venv\Scripts\Activate.ps1</code><button data-copy="..\.venv\Scripts\Activate.ps1">Copiar</button></div>
+    <p class="tip">Quando estiver ativo, normalmente aparece <code>(.venv)</code> no início da linha do terminal.</p>
+    <p class="small">Este caminho considera que a pasta <code>.venv</code> fica em <code>API - Def</code>, um nível acima de <code>PokedexOficina</code>.</p>
+    <h3>Se o comando não encontrar o arquivo</h3>
+    <p>Confira a estrutura das pastas no Explorer do VS Code. Se a pasta <code>.venv</code> estiver dentro da própria pasta do projeto, use:</p>
+    <div class="command"><code>.\.venv\Scripts\Activate.ps1</code><button data-copy=".\.venv\Scripts\Activate.ps1">Copiar</button></div>
+    <p class="small">Se o PowerShell bloquear scripts, peça ajuda ao professor ou responsável técnico. Não altere as configurações de segurança sem orientação.</p>
+  </section>
+
+  <h2>3. Instalar as bibliotecas</h2>
+  <section class="card">
+    <p>Confira a versão do Python:</p>
+    <div class="command"><code>python --version</code><button data-copy="python --version">Copiar</button></div>
+    <p>Instale as bibliotecas usadas no projeto:</p>
+    <div class="command"><code>python -m pip install flet requests flet-desktop</code><button data-copy="python -m pip install flet requests flet-desktop">Copiar</button></div>
+    <ul>
+      <li><strong>Flet:</strong> cria a interface gráfica.</li>
+      <li><strong>Requests:</strong> faz requisições para buscar dados da PokéAPI.</li>
+      <li><strong>Flet Desktop:</strong> componente necessário para executar a janela desktop em algumas instalações.</li>
+    </ul>
+    <p class="small">A instalação geralmente só precisa ser feita uma vez por ambiente virtual. É preciso estar conectado à internet.</p>
+  </section>
+
+  <h2>4. Executar a Pokédex</h2>
+  <section class="card">
+    <p>Com o terminal na pasta que contém <code>main.py</code> e o ambiente virtual ativo, execute:</p>
+    <div class="command"><code>python main.py</code><button data-copy="python main.py">Copiar</button></div>
+    <p class="tip">Se funcionar, a janela da Pokédex será aberta. Deixe o terminal aberto enquanto usa o programa.</p>
+  </section>
+
+  <h2>5. Erros comuns e como resolver</h2>
+  <section class="card">
+    <span class="label">Erro de biblioteca</span>
+    <h3><code>ModuleNotFoundError: No module named 'requests'</code></h3>
+    <p>O Python não encontrou a biblioteca Requests no ambiente ativo. Ative o ambiente virtual e execute:</p>
+    <div class="command"><code>python -m pip install requests</code><button data-copy="python -m pip install requests">Copiar</button></div>
+  </section>
+
+  <section class="card">
+    <span class="label">Erro de biblioteca</span>
+    <h3><code>ModuleNotFoundError: No module named 'flet_desktop'</code></h3>
+    <p>Instale o componente desktop do Flet no ambiente virtual:</p>
+    <div class="command"><code>python -m pip install flet-desktop</code><button data-copy="python -m pip install flet-desktop">Copiar</button></div>
+  </section>
+
+  <section class="card">
+    <span class="label">Erro de versão do Flet</span>
+    <h3><code>module 'flet' has no attribute 'ImageFit'</code></h3>
+    <p>Esse erro foi resolvido nesta versão do projeto usando a referência compatível com o código atual:</p>
+    <div class="command"><code>fit=ft.BoxFit.CONTAIN,</code><button data-copy="fit=ft.BoxFit.CONTAIN,">Copiar</button></div>
+    <p class="small">Atenção: este é um trecho de Python, não um comando para digitar no terminal. Abra o <code>main.py</code> e confira a linha indicada no erro.</p>
+  </section>
+
+  <section class="card">
+    <span class="label">Erro de versão do Flet</span>
+    <h3><code>module 'flet.controls.padding' has no attribute 'symmetric'</code></h3>
+    <p>Na versão do código usada na oficina, o padding simétrico fica assim:</p>
+    <div class="command"><code>ft.Padding.symmetric(horizontal=18, vertical=8)</code><button data-copy="ft.Padding.symmetric(horizontal=18, vertical=8)">Copiar</button></div>
+    <p>Para um padding com lados definidos individualmente, use por exemplo:</p>
+    <div class="command"><code>ft.Padding(left=10, top=5, right=10, bottom=0)</code><button data-copy="ft.Padding(left=10, top=5, right=10, bottom=0)">Copiar</button></div>
+    <p class="small">São trechos de código para editar no <code>main.py</code>, não comandos de terminal. Preserve os valores que o layout precisar.</p>
+  </section>
+
+  <section class="card">
+    <span class="label">Erro de versão do Flet</span>
+    <h3><code>module 'flet.controls.alignment' has no attribute 'center'</code></h3>
+    <p>Para centralizar um controle, no código desta oficina foi usado:</p>
+    <div class="command"><code>alignment=ft.Alignment(0, 0),</code><button data-copy="alignment=ft.Alignment(0, 0),">Copiar</button></div>
+    <p class="small">Edite a linha indicada pelo traceback. Não cole esse trecho sozinho no terminal.</p>
+  </section>
+
+  <section class="card">
+    <span class="label">Erro de sintaxe</span>
+    <h3><code>SyntaxError: invalid syntax. Perhaps you forgot a comma?</code></h3>
+    <p>Normalmente indica que há um erro de escrita no arquivo Python, muitas vezes uma vírgula ausente entre argumentos.</p>
+    <ol>
+      <li>Abra o <code>main.py</code> no VS Code.</li>
+      <li>Vá para a linha indicada no erro.</li>
+      <li>Confira a linha anterior e a seguinte. Se um argumento continuar na linha seguinte, normalmente precisa de uma vírgula no final.</li>
+      <li>Salve com <strong>Ctrl + S</strong> e execute novamente.</li>
+    </ol>
+    <p class="small">Não adicione vírgulas automaticamente em todo lugar: confira o contexto para não criar outro erro.</p>
+  </section>
+
+  <section class="card">
+    <span class="label">A janela abre, mas os Pokémon não carregam</span>
+    <h3>Mensagem sobre conexão ou erro da API</h3>
+    <p>A Pokédex busca dados pela internet. Confira a conexão e tente executar novamente:</p>
+    <div class="command"><code>python main.py</code><button data-copy="python main.py">Copiar</button></div>
+    <p>Se continuar falhando, leia a mensagem de erro que aparece no terminal. A API pode estar temporariamente indisponível, ou a rede pode estar bloqueando a conexão.</p>
+  </section>
+
+  <section class="card">
+    <span class="label">O arquivo não é encontrado</span>
+    <h3><code>can't open file 'main.py'</code></h3>
+    <p>O terminal provavelmente está na pasta errada ou o arquivo tem outro nome.</p>
+    <div class="command"><code>Get-Location</code><button data-copy="Get-Location">Copiar</button></div>
+    <div class="command"><code>dir</code><button data-copy="dir">Copiar</button></div>
+    <p>Use <code>cd</code> para entrar na pasta correta e confirme que o arquivo se chama exatamente <code>main.py</code>.</p>
+  </section>
+
+  <div class="warning">
+    <strong>Importante:</strong> nem todo erro se resolve digitando um comando no terminal. Mensagens como <code>SyntaxError</code> ou erros de atributos do Flet normalmente exigem editar o arquivo <code>main.py</code>. Leia sempre o traceback e confira o número da linha.
+  </div>
+
+  <h2>6. Fluxo rápido para os alunos</h2>
+  <section class="card">
+    <ol>
+      <li>Abrir o terminal integrado do VS Code: <strong>Terminal → Novo Terminal</strong>.</li>
+      <li>Entrar na pasta com <code>cd "E:\SEM.4\PE2\API - Def\PokedexOficina"</code>.</li>
+      <li>Ativar o ambiente com <code>..\.venv\Scripts\Activate.ps1</code>.</li>
+      <li>Se necessário, instalar as bibliotecas com <code>python -m pip install flet requests flet-desktop</code>.</li>
+      <li>Iniciar o programa com <code>python main.py</code>.</li>
+      <li>Se houver erro, ler a mensagem completa e conferir a linha indicada antes de alterar o código.</li>
+    </ol>
+  </section>
+</main>
+<footer>Pokédex da Oficina • Guia de comandos e solução de problemas</footer>
+<script>
+  // Os botões copiam o comando ou trecho associado ao atributo data-copy.
+  // O texto "Copiado!" aparece quando o navegador permite usar a área de transferência.
+  document.querySelectorAll("[data-copy]").forEach((botao) => {
+    botao.addEventListener("click", async () => {
+      const texto = botao.dataset.copy;
+      try {
+        await navigator.clipboard.writeText(texto);
+        const original = botao.textContent;
+        botao.textContent = "Copiado!";
+        setTimeout(() => { botao.textContent = original; }, 1300);
+      } catch (erro) {
+        alert("Não foi possível copiar automaticamente. Selecione o texto e use Ctrl+C.");
+      }
+    });
+  });
+</script>
+</body>
+</html>
