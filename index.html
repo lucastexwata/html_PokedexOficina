@@ -48,35 +48,77 @@
     Copie e execute <strong>um comando por vez</strong>.
   </div>
 
-  <h2>1. Entrar na pasta do projeto</h2>
+  <h2>1. Abrir a pasta do projeto</h2>
   <section class="card">
-    <p><code>cd</code> significa mudar de diretório. Este comando leva o terminal à pasta da Pokédex.</p>
-    <div class="command"><code>cd "E:\SEM.4\PE2\API - Def\PokedexOficina"</code><button data-copy='cd "E:\SEM.4\PE2\API - Def\PokedexOficina"'>Copiar</button></div>
-    <p class="small">As aspas são importantes porque o caminho tem espaços.</p>
-    <p>Para conferir onde você está:</p>
+    <p>No VS Code, abra a pasta onde ficará o arquivo <code>main.py</code>. Depois selecione <strong>Terminal → Novo Terminal</strong>.</p>
+    <p>Confira a pasta atual:</p>
     <div class="command"><code>Get-Location</code><button data-copy="Get-Location">Copiar</button></div>
-    <p>Para listar os arquivos da pasta e conferir se existe <code>main.py</code>:</p>
+    <p>Liste os arquivos e confira se está na pasta certa:</p>
     <div class="command"><code>dir</code><button data-copy="dir">Copiar</button></div>
+    <p>Se precisar entrar em outra pasta, use <code>cd</code> seguido do caminho dela. Exemplo:</p>
+    <div class="command"><code>cd "C:\Users\lucas\OneDrive\Desktop\teste"</code><button data-copy='cd "C:\Users\lucas\OneDrive\Desktop\teste"'>Copiar</button></div>
+    <p class="small">Esse é apenas um exemplo. Cada aluno deve usar o caminho da própria pasta. Não copie um caminho que exista somente no computador do professor.</p>
   </section>
 
-  <h2>2. Ativar o ambiente virtual</h2>
+  <h2>2. Conferir se o Python está instalado</h2>
   <section class="card">
-    <p>O ambiente virtual mantém as bibliotecas deste projeto separadas das de outros projetos.</p>
-    <div class="command"><code>..\.venv\Scripts\Activate.ps1</code><button data-copy="..\.venv\Scripts\Activate.ps1">Copiar</button></div>
-    <p class="tip">Quando estiver ativo, normalmente aparece <code>(.venv)</code> no início da linha do terminal.</p>
-    <p class="small">Este caminho considera que a pasta <code>.venv</code> fica em <code>API - Def</code>, um nível acima de <code>PokedexOficina</code>.</p>
-    <h3>Se o comando não encontrar o arquivo</h3>
-    <p>Confira a estrutura das pastas no Explorer do VS Code. Se a pasta <code>.venv</code> estiver dentro da própria pasta do projeto, use:</p>
+    <p>Antes de criar o ambiente, verifique se o terminal reconhece o Python:</p>
+    <div class="command"><code>py --version</code><button data-copy="py --version">Copiar</button></div>
+    <p>Se esse comando não funcionar, tente:</p>
+    <div class="command"><code>python --version</code><button data-copy="python --version">Copiar</button></div>
+    <p class="tip">Se aparecer algo como <code>Python 3.x.x</code>, o comando foi reconhecido.</p>
+    <div class="warning">
+      <strong>Se aparecer “Python não foi encontrado”:</strong> instale o Python para Windows pelo site oficial
+      <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org/downloads</a>.
+      Durante a instalação, marque <strong>Add Python to PATH</strong>, se essa opção aparecer. Depois feche e abra novamente o terminal e teste o comando outra vez.
+    </div>
+  </section>
+
+  <h2>3. Criar o ambiente virtual</h2>
+  <section class="card">
+    <p>O ambiente virtual guarda as bibliotecas deste projeto separadas de outros projetos. Execute este comando <strong>na pasta do projeto</strong>:</p>
+    <div class="command"><code>py -m venv .venv</code><button data-copy="py -m venv .venv">Copiar</button></div>
+    <p>Se o comando <code>py</code> não funcionar, tente:</p>
+    <div class="command"><code>python -m venv .venv</code><button data-copy="python -m venv .venv">Copiar</button></div>
+    <p>Após alguns segundos, deverá aparecer a pasta <code>.venv</code> no projeto. Ela pode ficar oculta dependendo das configurações do Explorer.</p>
+    <p class="small">Você normalmente cria o ambiente uma vez por projeto. Se a pasta <code>.venv</code> já existir, não precisa recriá-la: passe para a ativação.</p>
+    <h3>Se aparecer um erro ao criar</h3>
+    <ul>
+      <li>Confira se está na pasta correta usando <code>Get-Location</code>.</li>
+      <li>Confira se o Python está instalado com <code>py --version</code> ou <code>python --version</code>.</li>
+      <li>Se houver uma pasta <code>.venv</code> incompleta ou com erro, não a apague sem confirmar que não contém nada importante; peça ajuda ao professor para recriá-la.</li>
+    </ul>
+  </section>
+
+  <h2>4. Ativar o ambiente virtual</h2>
+  <section class="card">
+    <p>Com a pasta <code>.venv</code> criada dentro do projeto, execute no PowerShell:</p>
     <div class="command"><code>.\.venv\Scripts\Activate.ps1</code><button data-copy=".\.venv\Scripts\Activate.ps1">Copiar</button></div>
-    <p class="small">Se o PowerShell bloquear scripts, peça ajuda ao professor ou responsável técnico. Não altere as configurações de segurança sem orientação.</p>
+    <p class="tip">Quando ativado, normalmente aparece <code>(.venv)</code> no início da linha do terminal.</p>
+    <h3>Erro: o comando não é reconhecido ou o arquivo não existe</h3>
+    <p>Isso geralmente significa que a pasta <code>.venv</code> não foi criada nessa pasta, ou que o terminal está em outro diretório.</p>
+    <ol>
+      <li>Execute <code>Get-Location</code> e confira a pasta atual.</li>
+      <li>Execute <code>dir</code> e veja se a pasta <code>.venv</code> aparece.</li>
+      <li>Se ela não existir, volte à etapa 3 e crie o ambiente na pasta do projeto.</li>
+    </ol>
+    <h3>Erro: a execução de scripts foi desabilitada</h3>
+    <p>Se o PowerShell mostrar uma mensagem dizendo que não pode executar scripts, você pode usar o Prompt de Comando (CMD) no terminal do VS Code e executar:</p>
+    <div class="command"><code>.venv\Scripts\activate.bat</code><button data-copy=".venv\Scripts\activate.bat">Copiar</button></div>
+    <p class="small">No VS Code, use a seta ao lado do botão de novo terminal e escolha Command Prompt/CMD. Não altere a política de segurança do computador sem orientação do professor ou responsável técnico.</p>
+    <h3>Como sair do ambiente virtual</h3>
+    <div class="command"><code>deactivate</code><button data-copy="deactivate">Copiar</button></div>
+    <p class="small">Esse comando desativa o ambiente. Para trabalhar no projeto novamente, basta ativá-lo outra vez.</p>
   </section>
 
   <h2>3. Instalar as bibliotecas</h2>
   <section class="card">
     <p>Confira a versão do Python:</p>
     <div class="command"><code>python --version</code><button data-copy="python --version">Copiar</button></div>
-    <p>Instale as bibliotecas usadas no projeto:</p>
-    <div class="command"><code>python -m pip install flet requests flet-desktop</code><button data-copy="python -m pip install flet requests flet-desktop">Copiar</button></div>
+    <p>Instale o Flet (biblioteca usada para criar a interface gráfica):</p>
+    <div class="command"><code>python -m pip install flet</code><button data-copy="python -m pip install flet">Copiar</button></div>
+    <p>Depois, instale as outras dependências usadas pelo projeto:</p>
+    <div class="command"><code>python -m pip install requests flet-desktop</code><button data-copy="python -m pip install requests flet-desktop">Copiar</button></div>
     <ul>
       <li><strong>Flet:</strong> cria a interface gráfica.</li>
       <li><strong>Requests:</strong> faz requisições para buscar dados da PokéAPI.</li>
@@ -167,14 +209,17 @@
     <strong>Importante:</strong> nem todo erro se resolve digitando um comando no terminal. Mensagens como <code>SyntaxError</code> ou erros de atributos do Flet normalmente exigem editar o arquivo <code>main.py</code>. Leia sempre o traceback e confira o número da linha.
   </div>
 
-  <h2>6. Fluxo rápido para os alunos</h2>
+  <h2>7. Fluxo rápido para os alunos</h2>
   <section class="card">
     <ol>
-      <li>Abrir o terminal integrado do VS Code: <strong>Terminal → Novo Terminal</strong>.</li>
-      <li>Entrar na pasta com <code>cd "E:\SEM.4\PE2\API - Def\PokedexOficina"</code>.</li>
-      <li>Ativar o ambiente com <code>..\.venv\Scripts\Activate.ps1</code>.</li>
-      <li>Se necessário, instalar as bibliotecas com <code>python -m pip install flet requests flet-desktop</code>.</li>
-      <li>Iniciar o programa com <code>python main.py</code>.</li>
+      <li>Abrir no VS Code a pasta do projeto que contém (ou conterá) o <code>main.py</code>.</li>
+      <li>Abrir <strong>Terminal → Novo Terminal</strong>.</li>
+      <li>Conferir a pasta com <code>Get-Location</code> e os arquivos com <code>dir</code>.</li>
+      <li>Conferir o Python com <code>py --version</code> ou <code>python --version</code>.</li>
+      <li>Criar o ambiente, uma vez, com <code>py -m venv .venv</code> (ou <code>python -m venv .venv</code>).</li>
+      <li>Ativar com <code>.\.venv\Scripts\Activate.ps1</code>.</li>
+      <li>Instalar o Flet com <code>python -m pip install flet</code> e as dependências com <code>python -m pip install requests flet-desktop</code>.</li>
+      <li>Executar com <code>python main.py</code>.</li>
       <li>Se houver erro, ler a mensagem completa e conferir a linha indicada antes de alterar o código.</li>
     </ol>
   </section>
