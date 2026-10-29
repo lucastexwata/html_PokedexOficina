@@ -189,6 +189,353 @@ DESCRICOES_PT_BR = {
     "psyduck": "Sofre com dores de cabeça constantes. Quando a dor aumenta, pode liberar poderes psíquicos misteriosos.",
     "sylveon": "Emite uma aura calmante e usa suas antenas em forma de fita para tranquilizar quem está por perto.",
     "mew": "É considerado muito raro. Dizem que seu DNA contém o código genético de todos os Pokémon.",
+
+
+def criar_cartao(pokemon):
+
+    tipos = [item["type"]["name"] for item in pokemon.get("types", [])]
+    tipo_principal = tipos[0] if tipos else "normal"
+    cor = CORES_TIPOS.get(tipo_principal, "#34465E")
+
+
+    nomes_tipos = " / ".join(
+        NOMES_TIPOS.get(tipo, tipo.capitalize()) for tipo in tipos
+    )
+
+
+    sprites = pokemon.get("sprites", {})
+    imagem_url = (
+        sprites.get("other", {})
+        .get("official-artwork", {})
+        .get("front_default")
+        or sprites.get("front_default")
+    )
+
+
+    if imagem_url:
+        imagem_conteudo = ft.Image(
+            src=imagem_url,
+            width=155,
+            height=135,
+            fit=ft.BoxFit.CONTAIN,
+        )
+    else:
+        imagem_conteudo = ft.Text(
+            "Imagem indisponível", color=TEXTO_SECUNDARIO, size=11
+        )
+
+    imagem = ft.Container(
+        content=imagem_conteudo,
+        alignment=ft.Alignment(0, 0),
+        height=140,
+        width=205,
+    )
+
+    descricao = pokemon.get("descricao_pt", "Descrição não disponível.")
+
+
+    conteudo = ft.Column(
+        controls=[
+            ft.Row(
+                controls=[
+                    ft.Text(
+                        f"#{pokemon['id']:03}",
+                        size=11,
+                        color=TEXTO_CLARO,
+                    ),
+                    ft.Container(expand=True),
+                    ft.Icon(ft.Icons.STAR_ROUNDED, color=AMARELO, size=15),
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            ),
+            imagem,
+            ft.Text(
+                pokemon["name"].capitalize(),
+                size=19,
+                weight=ft.FontWeight.BOLD,
+                color="white",
+                text_align=ft.TextAlign.CENTER,
+            ),
+            ft.Text(
+                nomes_tipos,
+                size=13,
+                color="white",
+                text_align=ft.TextAlign.CENTER,
+            ),
+            ft.Container(
+                height=2,
+                bgcolor=AMARELO,
+                margin=ft.Margin(0, 5, 0, 4),
+                width=205,
+            ),
+            ft.Row(
+                controls=[
+                    ft.Text(
+                        f"Altura: {pokemon['height'] / 10:.1f} m",
+                        size=12,
+                        color=TEXTO_CLARO,
+                    ),
+                    ft.Text(
+                        f"Peso: {pokemon['weight'] / 10:.1f} kg",
+                        size=12,
+                        color=TEXTO_CLARO,
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                spacing=4,
+            ),
+            ft.Container(
+                content=ft.Text(
+                    descricao,
+                    size=11,
+                    italic=True,
+                    color="#F0F2F5",
+                    text_align=ft.TextAlign.CENTER,
+                    max_lines=3,
+                    overflow=ft.TextOverflow.ELLIPSIS,
+                ),
+                padding=ft.Padding(8, 4, 8, 0),
+                alignment=ft.Alignment(0, 0),
+                width=215,
+            ),
+        ],
+        spacing=4,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.START,
+        tight=True,
+    )
+
+
+    return ft.Container(
+        content=conteudo,
+        width=245,
+        height=390,
+        bgcolor=cor,
+        border=ft.Border.all(2, AMARELO),
+        border_radius=22,
+        padding=10,
+        alignment=ft.Alignment(0, -1),
+        clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+    )
+
+
+
+def montar_linhas(lista_cartoes):
+    linhas = []
+
+    for inicio in range(0, len(lista_cartoes), 4):
+        grupo = lista_cartoes[inicio:inicio + 4]
+
+        linhas.append(
+            ft.Row(
+                controls=grupo,
+                alignment=ft.MainAxisAlignment.CENTER,
+                vertical_alignment=ft.CrossAxisAlignment.START,
+                spacing=12,
+                wrap=False,
+            )
+        )
+
+    return linhas
+
+
+
+def main(page: ft.Page):
+
+    page.title = "Pokédex da Oficina"
+    page.bgcolor = FUNDO
+    page.padding = 12
+    page.spacing = 0
+    page.theme_mode = ft.ThemeMode.DARK
+    page.window.width = 1120
+    page.window.height = 900
+    page.window.min_width = 850
+    page.window.min_height = 650
+
+    todos_pokemon = []
+    filtro_atual = "todos"
+    botoes_filtro = {}
+
+    mensagem = ft.Text(
+        "Carregando Pokémon...",
+        color=TEXTO_SECUNDARIO,
+        size=13,
+        text_align=ft.TextAlign.CENTER,
+    )
+
+    area_cartas = ft.Column(
+        controls=[],
+        spacing=14,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        auto_scroll=False,
+    )
+
+
+
+    def atualizar_cartas():
+
+        filtrados = []
+
+        for pokemon in todos_pokemon:
+            tipos = [
+                item["type"]["name"] for item in pokemon.get("types", [])
+            ]
+            if filtro_atual == "todos" or filtro_atual in tipos:
+                filtrados.append(pokemon)
+
+        area_cartas.controls = montar_linhas(
+            [criar_cartao(pokemon) for pokemon in filtrados]
+        )
+
+        mensagem.value = (
+            f"{len(filtrados)} Pokémon exibido(s)."
+            if filtrados
+            else "Nenhum Pokémon encontrado para esse tipo."
+        )
+
+        for tipo, botao in botoes_filtro.items():
+            ativo = tipo == filtro_atual
+            cor_tipo = CORES_TIPOS.get(tipo, "#2379C9")
+            botao.bgcolor = AMARELO if ativo else cor_tipo
+            botao.content.color = FUNDO if ativo else "white"
+
+        page.update()
+        
+        
+
+    def escolher_filtro(tipo):
+        nonlocal filtro_atual
+        filtro_atual = tipo
+        atualizar_cartas()
+        
+        
+
+    def criar_botao_filtro(rotulo, tipo):
+        cor = AMARELO if tipo == "todos" else CORES_TIPOS.get(tipo, "#5D6470")
+        texto = ft.Text(
+            rotulo,
+            size=12,
+            weight=ft.FontWeight.BOLD,
+            color=FUNDO if tipo == "todos" else "white",
+        )
+
+        botao = ft.Container(
+            content=texto,
+            bgcolor=cor,
+            border_radius=18,
+            padding=ft.Padding(13, 8, 13, 8),
+            on_click=lambda e, valor=tipo: escolher_filtro(valor),
+            ink=True,
+        )
+
+        botoes_filtro[tipo] = botao
+        return botao
+
+    tipos_presentes = sorted({
+        item["type"]["name"]
+        for pokemon in todos_pokemon
+        for item in pokemon.get("types", [])
+    })
+    
+    
+
+    filtros = ft.Row(
+        controls=[
+            criar_botao_filtro("Todos", "todos")
+        ] + [
+            criar_botao_filtro(NOMES_TIPOS.get(tipo, tipo.capitalize()), tipo)
+            for tipo in tipos_presentes
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        wrap=True,
+        spacing=8,
+        run_spacing=8,
+    )
+    
+    
+
+    cabecalho = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Text(
+                    "POKÉDEX",
+                    size=32,
+                    weight=ft.FontWeight.BOLD,
+                    color=AMARELO,
+                ),
+                ft.Text(
+                    "Explore, descubra e conheça os Pokémon!",
+                    size=14,
+                    color=TEXTO_SECUNDARIO,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+            ],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            spacing=5,
+        ),
+        padding=ft.Padding(10, 8, 10, 8),
+        alignment=ft.Alignment(0, 0),
+    )
+
+
+
+    conteudo_principal = ft.Column(
+        controls=[
+            cabecalho,
+            ft.Container(
+                content=filtros,
+                alignment=ft.Alignment(0, 0),
+                padding=ft.Padding(8, 5, 8, 5),
+            ),
+            ft.Container(
+                content=mensagem,
+                alignment=ft.Alignment(0, 0),
+                height=24,
+            ),
+            ft.Container(
+                content=area_cartas,
+                expand=True,
+                padding=ft.Padding(4, 4, 4, 4),
+            ),
+        ],
+        expand=True,
+        spacing=0,
+    )
+    
+
+    page.add(conteudo_principal)
+
+
+    try:
+        todos_pokemon.extend(buscar_dados())
+
+        tipos_presentes = sorted({
+            item["type"]["name"]
+            for pokemon in todos_pokemon
+            for item in pokemon.get("types", [])
+        })
+
+        filtros.controls = [
+            criar_botao_filtro("Todos", "todos")
+        ] + [
+            criar_botao_filtro(NOMES_TIPOS.get(tipo, tipo.capitalize()), tipo)
+            for tipo in tipos_presentes
+        ]
+
+        atualizar_cartas()
+        
+
+    except requests.RequestException as erro:
+        mensagem.value = (
+            "Não foi possível carregar os Pokémon. Verifique sua conexão "
+            "com a internet e execute o programa novamente."
+        )
+        mensagem.color = "#FF7777"
+        print(f"Erro na consulta à PokéAPI: {erro}")
+        page.update()
 }</code></pre>
 
         <div class="aviso">
