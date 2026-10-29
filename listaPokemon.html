@@ -189,7 +189,7 @@ DESCRICOES_PT_BR = {
     "psyduck": "Sofre com dores de cabeça constantes. Quando a dor aumenta, pode liberar poderes psíquicos misteriosos.",
     "sylveon": "Emite uma aura calmante e usa suas antenas em forma de fita para tranquilizar quem está por perto.",
     "mew": "É considerado muito raro. Dizem que seu DNA contém o código genético de todos os Pokémon.",
-
+}
 
 def criar_cartao(pokemon):
 
@@ -536,7 +536,11 @@ def main(page: ft.Page):
         mensagem.color = "#FF7777"
         print(f"Erro na consulta à PokéAPI: {erro}")
         page.update()
-}</code></pre>
+
+
+if __name__ == "__main__":
+    ft.run(main)
+</code></pre>
 
         <div class="aviso">
             <strong>O que estamos configurando?</strong>
