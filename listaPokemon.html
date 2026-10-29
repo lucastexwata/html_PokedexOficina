@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Configuração da Pokédex</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 18px;
+            background: #0D111B;
+            color: #E9EEF8;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: #FFD23F;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #FFD23F;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #BDC8DA;
+            line-height: 1.7;
+        }
+
+        .aviso {
+            background: #192333;
+            border-left: 4px solid #FFD23F;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 22px 0;
+        }
+
+        .codigo-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button {
+            background: #FFD23F;
+            color: #0D111B;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ffe477;
+        }
+
+        pre {
+            background: #080B12;
+            border: 1px solid #293449;
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            line-height: 1.6;
+            color: #B9E6CA;
+            font-size: 14px;
+            white-space: pre;
+            tab-size: 4;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        .rodape {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #8895AA;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+
+        <a class="voltar" href="index.html">
+            ← Voltar ao guia da oficina
+        </a>
+
+        <h1>Configuração da Pokédex</h1>
+
+        <p>
+            Nesta página está o código que prepara as informações
+            utilizadas pela nossa Pokédex. Em vez de digitar tudo,
+            você pode copiar o bloco completo e colá-lo no arquivo Python
+            indicado pelo professor.
+        </p>
+
+        <div class="aviso">
+            <strong>Antes de copiar:</strong>
+            <p>
+                Confira se você abriu o arquivo correto no VS Code.
+                Cole este bloco na parte indicada durante a explicação,
+                antes das funções que utilizam essas configurações.
+                Não apague o restante do código do projeto.
+            </p>
+        </div>
+
+        <div class="codigo-topo">
+            <h2>Bloco de configuração</h2>
+
+            <button id="copiar" onclick="copiarCodigo()">
+                Copiar código
+            </button>
+        </div>
+
+        <pre><code id="codigo"># Lista com os oito Pokémon que aparecerão na oficina.
+# O laço for vai percorrer esta lista para buscar os dados de cada um.
+POKEMON_OFICINA = [
+    "bulbasaur",
+    "charmander",
+    "squirtle",
+    "pikachu",
+    "eevee",
+    "psyduck",
+    "sylveon",
+    "mew",
+]
+
+# Cores reutilizadas na interface.
+FUNDO = "#0D111B"
+AMARELO = "#FFD23F"
+TEXTO_CLARO = "#E9EEF8"
+TEXTO_SECUNDARIO = "#BDC8DA"
+
+# Dicionário que relaciona o tipo técnico da API à cor de sua carta.
+CORES_TIPOS = {
+    "grass": "#176B45",
+    "poison": "#8B4A9E",
+    "fire": "#AD3825",
+    "water": "#09618E",
+    "electric": "#B18A12",
+    "normal": "#85856F",
+    "psychic": "#A04483",
+    "fairy": "#B85C8E",
+}
+
+# Dicionário para mostrar os nomes dos tipos em português.
+NOMES_TIPOS = {
+    "grass": "Planta",
+    "poison": "Veneno",
+    "fire": "Fogo",
+    "water": "Água",
+    "electric": "Elétrico",
+    "normal": "Normal",
+    "psychic": "Psíquico",
+    "fairy": "Fada",
+}
+
+# Descrições fixas em português do Brasil.
+# Assim, a interface não depende de serviços externos de tradução.
+DESCRICOES_PT_BR = {
+    "bulbasaur": "Quando nasce, carrega uma semente nas costas. Ela cresce e se desenvolve junto com ele.",
+    "charmander": "A chama na ponta de sua cauda indica sua energia. Dizem que ela se apaga quando sua vida chega ao fim.",
+    "squirtle": "Após nascer, suas costas incham e formam uma carapaça. Ela endurece com o tempo e ajuda a protegê-lo.",
+    "pikachu": "Armazena eletricidade nas bochechas. Quando se sente ameaçado, libera descargas elétricas.",
+    "eevee": "Sua composição genética instável permite que se adapte a diferentes ambientes e evolua de várias formas.",
+    "psyduck": "Sofre com dores de cabeça constantes. Quando a dor aumenta, pode liberar poderes psíquicos misteriosos.",
+    "sylveon": "Emite uma aura calmante e usa suas antenas em forma de fita para tranquilizar quem está por perto.",
+    "mew": "É considerado muito raro. Dizem que seu DNA contém o código genético de todos os Pokémon.",
+}</code></pre>
+
+        <div class="aviso">
+            <strong>O que estamos configurando?</strong>
+            <p>
+                <strong>POKEMON_OFICINA:</strong> define quais Pokémon
+                aparecerão na aplicação.
+            </p>
+            <p>
+                <strong>CORES_TIPOS:</strong> relaciona os tipos dos
+                Pokémon às cores das cartinhas.
+            </p>
+            <p>
+                <strong>NOMES_TIPOS:</strong> permite apresentar os tipos
+                em português.
+            </p>
+            <p>
+                <strong>DESCRICOES_PT_BR:</strong> guarda as descrições
+                dos Pokémon em português.
+            </p>
+        </div>
+
+        <p class="rodape">
+            Oficina: Construindo uma Pokédex com API • Python e Flet
+        </p>
+
+    </main>
+
+    <script>
+        async function copiarCodigo() {
+            const codigo = document.getElementById("codigo").textContent;
+            const botao = document.getElementById("copiar");
+
+            try {
+                await navigator.clipboard.writeText(codigo);
+                botao.textContent = "Código copiado!";
+            } catch (erro) {
+                const area = document.createElement("textarea");
+                area.value = codigo;
+                area.style.position = "fixed";
+                area.style.opacity = "0";
+
+                document.body.appendChild(area);
+                area.select();
+
+                const sucesso = document.execCommand("copy");
+                area.remove();
+
+                botao.textContent = sucesso
+                    ? "Código copiado!"
+                    : "Selecione e copie manualmente";
+            }
+
+            setTimeout(() => {
+                botao.textContent = "Copiar código";
+            }, 2500);
+        }
+    </script>
+
+</body>
+</html>
